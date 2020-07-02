@@ -1,0 +1,101 @@
+package ${package.Controller};
+
+#set($temp=${package.Controller})
+#set($temp_len=$temp.length() - 11)
+#set($package_name=$temp.substring( 0 ,$temp_len ) )
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import ${package_name}.common.utils.G;
+import ${package.Service}.${table.serviceName};
+import ${package.Entity}.${entity};
+
+###if(${restControllerStyle})
+##import org.springframework.web.bind.annotation.RestController;
+###else
+##import org.springframework.stereotype.Controller;
+###end
+#if(${superControllerClassPackage})
+import ${superControllerClassPackage};
+#end
+
+/**
+ * <p>
+ * $!{table.comment} 前端控制器
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+#if(${restControllerStyle})
+@RestController
+#else
+@Controller
+#end
+@RequestMapping("#if(${package.ModuleName})/${package.ModuleName}#end/#if(${controllerMappingHyphenStyle})${controllerMappingHyphen}#else${table.entityPath}#end")
+#if(${kotlin})
+class ${table.controllerName}#if(${superControllerClass}) : ${superControllerClass}()#end
+
+#else
+#if(${superControllerClass})
+public class ${table.controllerName} extends ${superControllerClass} {
+#else
+public class ${table.controllerName} {
+#end
+    #set($s=${table.serviceName})
+    #set( $sl=$s.length() )
+    #set( $send=$s.substring( 1 ,$sl ) )
+    #set( $prefix = $send.substring(0,1).toLowerCase() )
+    #set( $suffix = $send.substring(1,$send.length()) )
+    #set( $service = "$prefix$suffix")
+    #set($e=${entity})
+    #set( $el=$e.length() )
+    #set( $eend=$e.substring( 1 ,$el ) )
+    #set( $estart = $e.substring(0,1).toLowerCase() )
+    #set( $entity = "$estart$eend")
+
+    @Autowired
+    private ${s} ${service};
+
+    /**
+     * 插入
+     */
+    @PostMapping
+    public Object save(@RequestBody ${e} ${entity}) {
+        return G.ok(${service}.save(${entity}));
+    }
+
+    /**
+     * 删除
+     */
+    @DeleteMapping
+    public Object del(@RequestParam int id) {
+        return G.ok(${service}.removeById(id));
+    }
+
+    /**
+     * 详情
+     */
+    @GetMapping("/{id}")
+    public Object view(@PathVariable int id) {
+        return G.ok(${service}.getById(id));
+    }
+
+    /**
+     * 列表
+     */
+    @GetMapping
+    public Object list(@RequestParam(name = "page", defaultValue = "1") int page, @RequestParam(name = "size", defaultValue = "10") int size) {
+        return G.ok(${service}.page(new Page<>(page, size), null));
+    }
+
+    /**
+     * 编辑
+     */
+    @PutMapping
+    public Object edit(@RequestBody ${e} ${entity}) {
+        return G.ok(${service}.updateById(${entity}));
+    }
+}
+
+#end
