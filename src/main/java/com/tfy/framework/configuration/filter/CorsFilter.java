@@ -10,7 +10,7 @@ import java.io.IOException;
 
 @Component
 @Slf4j
-public class CrosFilter implements Filter {
+public class CorsFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
 

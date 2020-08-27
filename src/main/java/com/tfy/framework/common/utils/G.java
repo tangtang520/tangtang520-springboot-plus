@@ -8,6 +8,7 @@ import com.tfy.framework.common.exception.IErrorCode;
 import com.tfy.framework.common.vo.ResponseVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.MDC;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -24,29 +25,25 @@ public class G {
         ResponseVo<T> vo = new ResponseVo<>();
         vo.setCode(ApiErrorCode.SUCCESS.getCode());
         vo.setData(data);
+        vo.setSerialNumber(MDC.get(GlobalConst.SERIAL_NUMBER_KEY));
         return vo;
-    }
-
-    public static Object ok(HttpServletRequest request, Object data) {
-        ResponseVo<Object> vo = new ResponseVo<>();
-        vo.setCode(ApiErrorCode.SUCCESS.getCode());
-        vo.setData(data);
-        return returnType(request, vo);
     }
 
     public static <T> ResponseVo<T> failed(String msg) {
-        ResponseVo<T> vo = new ResponseVo<>();
-        vo.setCode(ApiErrorCode.FAILED.getCode());
-        vo.setMsg(msg);
-        vo.setData(null);
-        return vo;
+        return failed(ApiErrorCode.FAILED.getCode(), msg);
     }
 
     public static <T> ResponseVo<T> failed(IErrorCode errorCode) {
+        return failed(errorCode.getCode(), errorCode.getMsg());
+    }
+
+
+    public static <T> ResponseVo<T> failed(long code, String msg) {
         ResponseVo<T> vo = new ResponseVo<>();
-        vo.setCode(errorCode.getCode());
-        vo.setMsg(errorCode.getMsg());
+        vo.setCode(code);
+        vo.setMsg(msg);
         vo.setData(null);
+        vo.setSerialNumber(MDC.get(GlobalConst.SERIAL_NUMBER_KEY));
         return vo;
     }
 
@@ -80,19 +77,6 @@ public class G {
      */
     public static boolean retBool(int count) {
         return count > GlobalConst.ZERO;
-    }
-
-    public static Object returnType(HttpServletRequest request, Object returnMsg) {
-        String callback = request.getParameter("callback");
-
-        if (StringUtils.isNotEmpty(callback)) {
-            try {
-                return callback + "(" + JSONObject.toJSONString(returnMsg) + ")";
-            } catch (Exception e) {
-                log.error("G.returnType:", e);
-            }
-        }
-        return returnMsg;
     }
 
     public static String uuidExcludeStrip() {

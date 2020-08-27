@@ -16,4 +16,7 @@ public class ResponseVo<T> implements Serializable {
 
     /*错误信息*/
     private String msg;
+
+    /*请求流水号*/
+    private String serialNumber;
 }
