@@ -5,12 +5,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.tfy.framework.common.consts.GlobalConst;
 import com.tfy.framework.common.exception.ApiErrorCode;
 import com.tfy.framework.common.exception.IErrorCode;
-import com.tfy.framework.common.vo.ResponseVo;
+import com.tfy.framework.common.VO.ResponseVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.MDC;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.UUID;
 

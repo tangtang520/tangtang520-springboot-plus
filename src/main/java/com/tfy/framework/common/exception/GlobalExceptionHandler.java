@@ -1,7 +1,7 @@
 package com.tfy.framework.common.exception;
 
 import com.tfy.framework.common.utils.G;
-import com.tfy.framework.common.vo.ResponseVo;
+import com.tfy.framework.common.VO.ResponseVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ExceptionHandler;

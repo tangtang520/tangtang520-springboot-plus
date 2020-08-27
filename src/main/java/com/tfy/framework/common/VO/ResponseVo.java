@@ -1,4 +1,4 @@
-package com.tfy.framework.common.vo;
+package com.tfy.framework.common.VO;
 
 import lombok.Getter;
 import lombok.Setter;

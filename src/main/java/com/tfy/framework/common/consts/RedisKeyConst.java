@@ -27,9 +27,7 @@ public class RedisKeyConst {
         }
     }
 
-    /**
-     * 优惠券
-     */
+
     @AllArgsConstructor
     @Getter
     public enum ExampleEnum implements BaseEnum {
