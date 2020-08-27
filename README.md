@@ -264,6 +264,37 @@ java.lang.ArithmeticException: / by zero
 	at javax.servlet.http.HttpServlet.service(HttpServlet.java:590)
 ```
 
+## redis key统一配置和使用
+
+### 配置 
+> RedisKeyConst类分模块配置
+
+```java
+    @AllArgsConstructor
+    @Getter
+    public enum ExampleEnum implements BaseEnum {
+        /* 格式: key -> STR:USER:{userId},  value -> JSONString */
+        STR_USER_INFO("STR:USER:%s", TimeUnit.SECONDS, 24 * 60 * 60);
+        private String redisKeyFormat;
+        private TimeUnit timeUnit;
+        private Integer timeValue;
+    }
+```
+### 使用
+```java
+/* 获取指定的redis key相关信息，并且复制占位符*/
+KeyVo userInfoKeyVo = ExampleEnum.STR_USER_INFO.keyVo(userId);
+
+String userInfoRedisKey = userInfoKeyVo.getRedisKey();
+
+TimeUnit userInfoRedisKeyTimeUnit = userInfoKeyVo.getTimeUnit();
+
+Integer userInfoRedisKeyTimeValue = userInfoKeyVo.getTimeValue();
+```
+
+
+
+
 ## 后续计划添加功能
 *  后续会使用[HikariCP](https://github.com/brettwooldridge/HikariCP)来替代druid
 * 增加分库分表策略以及主从策略的代码生成器，推荐大家使用[shardingsphere](https://github.com/apache/shardingsphere) 
